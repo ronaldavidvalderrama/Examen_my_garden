@@ -65,7 +65,7 @@ class ElloquentPlantasRepository implements PlantasRepository
     /**
      * {@inheritdoc}
      */
-    public function updateUser(int $id, array $data): bool
+    public function updatePlantas(int $id, array $data): bool
     {
         $plantas = $this->findPlantasOfId($id);
         return $plantas->update($data);
