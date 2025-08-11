@@ -2,16 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Controllers\User;
+namespace App\Application\Controllers\Plantas;
 
-use App\Application\Dtos\Planta\FilterPlantasDto as PlantaFilterPlantasDto;
-use App\Application\Dtos\Planta\FindPlantaDto as PlantaFindPlantaDto;
-use App\Application\Dtos\Plantas\PatchPlantasDto as PlantasPatchPlantasDto;
-use App\Application\Dtos\Plantas\PlantasDto as PlantasPlantasDto;
-use App\Application\Dtos\User\FilterPlantasDto;
-use App\Application\Dtos\User\FindPlantaDto;
-use App\Application\Dtos\User\PatchPlantasDto;
-use App\Application\Dtos\User\PlantasDto;
+use App\Application\Dtos\Planta\FilterPlantasDto;
+use App\Application\Dtos\Planta\FindPlantaDto;
+use App\Application\Dtos\Plantas\PatchPlantasDto;
+use App\Application\Dtos\Plantas\PlantasDto;
 use App\Application\Http\Traits\ApiResponseTrait;
 use App\Application\UseCase\User\CreatePlantasUseCase;
 use App\Application\UseCase\User\DeletePlantasUseCase;
@@ -22,19 +18,19 @@ use App\Domain\Repository\plantasRepository;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class UserController
+class PlantasController
 {
     use ApiResponseTrait;
 
-    public function __construct(private readonly plantasRepository $userRepository) {}
+    public function __construct(private readonly plantasRepository $PlantasRepository) {}
 
     /**
      * @return mixed
      */
     public function index(Request $request, Response $response)
     {
-        $dto = new PlantaFilterPlantasDto($request->getQueryParams());
-        $useCase = new GetAllPlantasUseCase($this->userRepository);
+        $dto = new FilterPlantasDto($request->getQueryParams());
+        $useCase = new GetAllPlantasUseCase($this->PlantasRepository);
         return $this->successResponse($response, $useCase($dto));
     }
 
@@ -45,8 +41,8 @@ class UserController
      */
     public function findById(Request $request, Response $response, array $args)
     {
-        $dto = new PlantaFindPlantaDto($args);
-        $useCase = new FindPlantasUseCase($this->userRepository);
+        $dto = new FindPlantaDto($args);
+        $useCase = new FindPlantasUseCase($this->PlantasRepository);
         return $this->successResponse($response, $useCase($dto));
     }
 
@@ -57,8 +53,8 @@ class UserController
      */
     public function create(Request $request, Response $response)
     {
-        $dto = new PlantasPlantasDto($request->getParsedBody());
-        $useCase = new CreatePlantasUseCase($this->userRepository);
+        $dto = new PlantasDto($request->getParsedBody());
+        $useCase = new CreatePlantasUseCase($this->PlantasRepository);
         return $this->successResponse($response, $useCase($dto));
     }
 
@@ -69,8 +65,8 @@ class UserController
      */
     public function update(Request $request, Response $response, array $args)
     {
-        $dto = new PlantasPatchPlantasDto(array_merge($request->getParsedBody(), $args));
-        $useCase = new UpdatePlantasUseCase($this->userRepository);
+        $dto = new PatchPlantasDto(array_merge($request->getParsedBody(), $args));
+        $useCase = new UpdatePlantasUseCase($this->PlantasRepository);
         return $this->successResponse($response, $useCase($dto));
     }
 
@@ -81,8 +77,8 @@ class UserController
      */
     public function delete(Request $request, Response $response, array $args)
     {
-        $dto = new FindPlantasUseCase($args);
-        $useCase = new DeletePlantasUseCase($this->userRepository);
+        $dto = new FindPlantaDto($args);
+        $useCase = new DeletePlantasUseCase($this->PlantasRepository);
         return $this->successResponse($response, $useCase($dto));
     }
 }
